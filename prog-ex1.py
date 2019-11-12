@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 def gen_mesh(n):
     nodes = range(0, (n+1)*(n+1))
-    coordinates = list(map(lambda i: [i // (n+1), i % (n+1)], nodes))
+    coordinates = list(map(lambda i: [(i // (n+1))/n, (i % (n+1))/n], nodes))
     def corners(i):
         row = i // (2*n)
         lower_left = i % (2*n) // 2 + (n+1)*row
