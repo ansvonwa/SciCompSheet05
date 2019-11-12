@@ -81,9 +81,9 @@ def assemble_mass():
     return m.tocsr()
 
 def assemble_load(f):
-    v = np.zeros(n+1)
+    v = np.zeros((n+1)*(n+1))
     for t in range(0, 2*n*n):
-        loc = assemble_stiffness_local(t)
+        loc = assemble_load_local(t, f)
         for c1 in range(0,3):
             v[elements[t][c1]] += loc[c1]
     return v.tocsr()
