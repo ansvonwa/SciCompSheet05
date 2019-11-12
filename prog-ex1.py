@@ -100,6 +100,13 @@ def solve(f):
 
 print(solve(f))
 
+coordinates = np.array(coordinates)
+x = coordinates[:,0]
+y = coordinates[:,1]
+
+plt.triplot(x, y, elements)
+#plt.show()
+
 def foo(coordinates, elements, dirichletboundary):
     # ...
     42
