@@ -4,6 +4,7 @@ import scipy
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import math
 
 def gen_mesh(n):
     nodes = range(0, (n+1)*(n+1))
@@ -21,7 +22,8 @@ def gen_mesh(n):
     return (nodes, coordinates, elements, dirichletboundary)
 
 #print(gen_mesh(3))
-nodes, coordinates, elements, dirichletboundary = gen_mesh(3)
+n = 3
+nodes, coordinates, elements, dirichletboundary = gen_mesh(n)
 
 def assemble_stiffness_local(triangle):
     g1 = np.array([[1] + coordinates[c] for c in elements[triangle]])
@@ -44,10 +46,14 @@ def assemble_mass_local(triangle):
     return m
 
 print(assemble_mass_local(0))
+#print([print(v) for v in map(assemble_stiffness_local, nodes)])
 
-def assemble_load_local(triangle):
-    # ??
-    43
+def assemble_load_local(triangle, f):
+    [xT, yT] = map(lambda v: v/3, map(sum, zip(*[coordinates[c] for c in elements[triangle]])))
+    return f(xT, yT) * 1/(6*n*n) * np.ones(3)
+
+f = lambda x,y: 2*math.pi*math.sin(math.pi*x)*math.sin(math.pi*y)
+print(assemble_load_local(0, f))
 
 def foo(coordinates, elements, dirichletboundary):
     # ...
