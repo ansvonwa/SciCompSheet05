@@ -86,7 +86,19 @@ def assemble_load(f):
         loc = assemble_load_local(t, f)
         for c1 in range(0,3):
             v[elements[t][c1]] += loc[c1]
-    return v.tocsr()
+    return v
+
+
+def solve(f):
+    non_zero = list(filter(lambda n: not n in dirichletboundary, nodes))
+    a = assemble_stiffness()
+    v = assemble_load(f)
+    res = spsolve(a[non_zero,:][:,non_zero], v[non_zero])
+    full_res = np.zeros((n+1)*(n+1))
+    full_res[non_zero] = res
+    return full_res
+
+print(solve(f))
 
 def foo(coordinates, elements, dirichletboundary):
     # ...
