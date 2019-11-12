@@ -5,6 +5,8 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import math
+from scipy.sparse import lil_matrix
+from scipy.sparse.linalg import spsolve
 
 def gen_mesh(n):
     nodes = range(0, (n+1)*(n+1))
@@ -54,6 +56,37 @@ def assemble_load_local(triangle, f):
 
 f = lambda x,y: 2*math.pi*math.sin(math.pi*x)*math.sin(math.pi*y)
 print(assemble_load_local(0, f))
+
+def assemble_stiffness():
+    num_nodes = (n+1)*(n+1)
+    a = lil_matrix((num_nodes, num_nodes))
+    for t in range(0, 2*n*n):
+        loc = assemble_stiffness_local(t)
+        for c1 in range(0,3):
+            for c2 in range(0,3):
+                a[elements[t][c1], elements[t][c2]] += loc[c1][c2]
+    return a.tocsr()
+
+#print(assemble_stiffness().toarray() + 1000 - 1000)
+
+
+def assemble_mass():
+    num_nodes = (n+1)*(n+1)
+    m = lil_matrix((num_nodes, num_nodes))
+    for t in range(0, 2*n*n):
+        loc = assemble_mass_local(t)
+        for c1 in range(0,3):
+            for c2 in range(0,3):
+                m[elements[t][c1], elements[t][c2]] += loc[c1][c2]
+    return m.tocsr()
+
+def assemble_load(f):
+    v = np.zeros(n+1)
+    for t in range(0, 2*n*n):
+        loc = assemble_stiffness_local(t)
+        for c1 in range(0,3):
+            v[elements[t][c1]] += loc[c1]
+    return v.tocsr()
 
 def foo(coordinates, elements, dirichletboundary):
     # ...
