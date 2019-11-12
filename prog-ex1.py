@@ -35,8 +35,19 @@ def assemble_stiffness_local(triangle):
 
 print(assemble_stiffness_local(0))
 
-def assemble_mass_local():
-    42
+def assemble_mass_local(triangle):
+    g1 = np.array([[1] + coordinates[c] for c in elements[triangle]])
+    x = g1[:,1]
+    y = g1[:,2]
+    m = 1/24 * abs((x[1]-x[0])*(y[2]-y[0]) - (y[1]-y[0])*(x[2]-x[0])) * \
+            (np.ones((3,3)) + np.diag(np.ones(3)))
+    return m
+
+print(assemble_mass_local(0))
+
+def assemble_load_local(triangle):
+    # ??
+    43
 
 def foo(coordinates, elements, dirichletboundary):
     # ...
