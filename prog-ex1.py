@@ -33,7 +33,7 @@ def assemble_stiffness_local(triangle):
     g = np.linalg.inv(np.transpose(g1)).dot(g2)
     x = g1[:,1]
     y = g1[:,2]
-    a = 1/2 * abs((x[1]-x[0])*(y[2]-y[0]) - (y[1]-y[0])*(x[2]-x[0])) * \
+    a = abs((x[1]-x[0])*(y[2]-y[0]) - (y[1]-y[0])*(x[2]-x[0])) * \
             g.dot(np.transpose(g))
     return a
 
