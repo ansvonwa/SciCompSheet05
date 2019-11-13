@@ -54,7 +54,7 @@ def assemble_load_local(triangle, f):
     [xT, yT] = map(lambda v: v/3, map(sum, zip(*[coordinates[c] for c in elements[triangle]])))
     return f(xT, yT) * 1/(6*n*n) * np.ones(3)
 
-f = lambda x,y: 2*math.pi*math.pi*math.sin(math.pi*x)*math.sin(math.pi*y)
+f = lambda x,y: 2*np.pi*np.pi*np.sin(np.pi*x)*np.sin(np.pi*y)
 print(assemble_load_local(0, f))
 
 def assemble_stiffness():
